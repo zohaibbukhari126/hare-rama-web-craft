@@ -77,14 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Hare Rama Foundation Pakistan | Serving Humanity" },
+      { name: "description", content: "Hare Rama Foundation Pakistan empowers marginalized communities through education, skill development, women empowerment, emergency relief and advocacy across Pakistan." },
+      { name: "author", content: "Hare Rama Foundation Pakistan" },
+      { property: "og:title", content: "Hare Rama Foundation Pakistan" },
+      { property: "og:description", content: "Empowering marginalized communities. Building a better tomorrow." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {

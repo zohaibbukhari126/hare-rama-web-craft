@@ -21,7 +21,7 @@ export function SiteHeader() {
         <div className="container-wide flex items-center justify-between py-2">
           <span className="opacity-90">Welcome to Hare Rama Foundation Pakistan</span>
           <div className="hidden md:flex items-center gap-4 opacity-90">
-            <a href="#" aria-label="Facebook" className="hover:text-accent transition-smooth"><Facebook className="h-3.5 w-3.5" /></a>
+            <a href="https://www.facebook.com/hareramafoundation/" aria-label="Facebook" className="hover:text-accent transition-smooth"><Facebook className="h-3.5 w-3.5" /></a>
             <a href="#" aria-label="Instagram" className="hover:text-accent transition-smooth"><Instagram className="h-3.5 w-3.5" /></a>
             <a href="#" aria-label="YouTube" className="hover:text-accent transition-smooth"><Youtube className="h-3.5 w-3.5" /></a>
             <a href="#" aria-label="LinkedIn" className="hover:text-accent transition-smooth"><Linkedin className="h-3.5 w-3.5" /></a>

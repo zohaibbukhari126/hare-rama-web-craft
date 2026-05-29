@@ -80,10 +80,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Hare Rama Foundation Pakistan | Serving Humanity" },
       { name: "description", content: "Hare Rama Foundation Pakistan empowers marginalized communities through education, skill development, women empowerment, emergency relief and advocacy across Pakistan." },
       { name: "author", content: "Hare Rama Foundation Pakistan" },
-      { property: "og:title", content: "Hare Rama Foundation Pakistan" },
-      { property: "og:description", content: "Empowering marginalized communities. Building a better tomorrow." },
+      { property: "og:title", content: "Hare Rama Foundation Pakistan | Serving Humanity" },
+      { property: "og:description", content: "Hare Rama Foundation Pakistan empowers marginalized communities through education, skill development, women empowerment, emergency relief and advocacy across Pakistan." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Hare Rama Foundation Pakistan | Serving Humanity" },
+      { name: "twitter:description", content: "Hare Rama Foundation Pakistan empowers marginalized communities through education, skill development, women empowerment, emergency relief and advocacy across Pakistan." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dac7f8fa-a9e4-442e-acc8-5dba6aff1cd6/id-preview-10d5a0ce--ccc4d81d-3c81-433e-8171-d53d3de53cee.lovable.app-1780068390359.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dac7f8fa-a9e4-442e-acc8-5dba6aff1cd6/id-preview-10d5a0ce--ccc4d81d-3c81-433e-8171-d53d3de53cee.lovable.app-1780068390359.png" },
     ],
     links: [
       {

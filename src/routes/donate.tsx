@@ -54,6 +54,7 @@ function DonatePage() {
           <button type="button" className="mt-6 w-full inline-flex justify-center items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-6 py-4 rounded-md shadow-card hover:shadow-elegant hover:-translate-y-0.5 transition-smooth">
             DONATE {display} PKR <Heart className="h-4 w-4 fill-current" />
           </button>
+<<<<<<< HEAD
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-6">
@@ -86,6 +87,9 @@ function DonatePage() {
             </form>
             <p className="text-xs text-muted-foreground">Secure &amp; encrypted. Powered by PayPal.</p>
           </div>
+=======
+          <p className="text-xs text-muted-foreground mt-3">Payment integration can be connected via Stripe or local payment gateways.</p>
+>>>>>>> c329e96265652163eadee9916e9a7d8dc83da87f
         </div>
         <aside className="lg:col-span-2 bg-primary-deep text-primary-foreground rounded-xl p-8 shadow-elegant">
           <h3 className="text-xl font-bold">Where your donation goes</h3>
@@ -95,6 +99,7 @@ function DonatePage() {
             <li><strong className="text-accent">PKR 25,000</strong> — supports one woman's micro-enterprise grant.</li>
             <li><strong className="text-accent">PKR 50,000</strong> — delivers emergency relief to a family for one month.</li>
           </ul>
+<<<<<<< HEAD
           <div className="mt-8 pt-6 border-t border-white/20">
             <h4 className="font-bold mb-3">Payment Methods Accepted</h4>
             <ul className="space-y-2 text-sm opacity-90">
@@ -103,6 +108,8 @@ function DonatePage() {
               <li>✅ Cash at Office</li>
             </ul>
           </div>
+=======
+>>>>>>> c329e96265652163eadee9916e9a7d8dc83da87f
         </aside>
       </div>
     </PageShell>

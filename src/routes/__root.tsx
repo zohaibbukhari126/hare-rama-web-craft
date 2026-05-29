@@ -7,9 +7,16 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+<<<<<<< HEAD
 import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+=======
+import { useEffect, type ReactNode } from "react";
+
+import appCss from "../styles.css?url";
+import { reportLovableError } from "../lib/lovable-error-reporting";
+>>>>>>> c329e96265652163eadee9916e9a7d8dc83da87f
 
 function NotFoundComponent() {
   return (
@@ -36,6 +43,12 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+  }, [error]);
+>>>>>>> c329e96265652163eadee9916e9a7d8dc83da87f
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -82,8 +95,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Hare Rama Foundation Pakistan | Serving Humanity" },
       { name: "twitter:description", content: "Hare Rama Foundation Pakistan empowers marginalized communities through education, skill development, women empowerment, emergency relief and advocacy across Pakistan." },
+<<<<<<< HEAD
       { property: "og:image", content: "https://hrfpk.org/og-image.png" },
       { name: "twitter:image", content: "https://hrfpk.org/og-image.png" },
+=======
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dac7f8fa-a9e4-442e-acc8-5dba6aff1cd6/id-preview-10d5a0ce--ccc4d81d-3c81-433e-8171-d53d3de53cee.lovable.app-1780068390359.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/dac7f8fa-a9e4-442e-acc8-5dba6aff1cd6/id-preview-10d5a0ce--ccc4d81d-3c81-433e-8171-d53d3de53cee.lovable.app-1780068390359.png" },
+>>>>>>> c329e96265652163eadee9916e9a7d8dc83da87f
     ],
     links: [
       {

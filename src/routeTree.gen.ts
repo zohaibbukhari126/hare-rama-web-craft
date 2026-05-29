@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as GetInvolvedRouteImport } from './routes/get-involved'
+import { Route as DonateRouteImport } from './routes/donate'
 import { Route as AdvocacyRouteImport } from './routes/advocacy'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const MediaRoute = MediaRouteImport.update({
 const GetInvolvedRoute = GetInvolvedRouteImport.update({
   id: '/get-involved',
   path: '/get-involved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdvocacyRoute = AdvocacyRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/advocacy': typeof AdvocacyRoute
+  '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/media': typeof MediaRoute
   '/programs': typeof ProgramsRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/advocacy': typeof AdvocacyRoute
+  '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/media': typeof MediaRoute
   '/programs': typeof ProgramsRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/advocacy': typeof AdvocacyRoute
+  '/donate': typeof DonateRoute
   '/get-involved': typeof GetInvolvedRoute
   '/media': typeof MediaRoute
   '/programs': typeof ProgramsRoute
@@ -78,16 +87,25 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/advocacy'
+    | '/donate'
     | '/get-involved'
     | '/media'
     | '/programs'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/advocacy' | '/get-involved' | '/media' | '/programs'
+  to:
+    | '/'
+    | '/about'
+    | '/advocacy'
+    | '/donate'
+    | '/get-involved'
+    | '/media'
+    | '/programs'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/advocacy'
+    | '/donate'
     | '/get-involved'
     | '/media'
     | '/programs'
@@ -97,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdvocacyRoute: typeof AdvocacyRoute
+  DonateRoute: typeof DonateRoute
   GetInvolvedRoute: typeof GetInvolvedRoute
   MediaRoute: typeof MediaRoute
   ProgramsRoute: typeof ProgramsRoute
@@ -123,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/get-involved'
       fullPath: '/get-involved'
       preLoaderRoute: typeof GetInvolvedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/advocacy': {
@@ -153,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdvocacyRoute: AdvocacyRoute,
+  DonateRoute: DonateRoute,
   GetInvolvedRoute: GetInvolvedRoute,
   MediaRoute: MediaRoute,
   ProgramsRoute: ProgramsRoute,

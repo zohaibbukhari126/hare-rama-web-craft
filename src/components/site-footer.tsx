@@ -44,8 +44,8 @@ export function SiteFooter() {
         <div>
           <h4 className="font-bold mb-4">Contact Us</h4>
           <ul className="space-y-3 text-sm opacity-90">
-            <li className="flex gap-3"><MapPin className="h-4 w-4 mt-0.5 text-accent shrink-0" /> 106-D Zaman Park, Lahore, Pakistan</li>
-            <li className="flex gap-3"><Phone className="h-4 w-4 mt-0.5 text-accent shrink-0" /> +92 42 3742 0741</li>
+            <li className="flex gap-3"><MapPin className="h-4 w-4 mt-0.5 text-accent shrink-0" /> Chak No111/P East. St.# 04 Rahim Yar Khan , Rahim Yar Khan, Pakistan </li>
+            <li className="flex gap-3"><Phone className="h-4 w-4 mt-0.5 text-accent shrink-0" /> +92 300 9675588</li>
             <li className="flex gap-3"><Mail className="h-4 w-4 mt-0.5 text-accent shrink-0" /> info@hrfpk.org</li>
             <li className="flex gap-3"><Globe className="h-4 w-4 mt-0.5 text-accent shrink-0" /> www.hrfpk.org</li>
           </ul>

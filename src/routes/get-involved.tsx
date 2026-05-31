@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import { HandHeart, Briefcase, Users, Sparkles, ArrowRight } from "lucide-react";
+import { ScrollReveal, HoverCard } from "@/components/ui/animation-wrappers";
 
 export const Route = createFileRoute("/get-involved")({
   head: () => ({
@@ -26,24 +27,31 @@ function GetInvolvedPage() {
   return (
     <PageShell eyebrow="JOIN US" title="Get Involved" intro="There are many ways to support our work. Choose the path that fits you and help us build a better tomorrow.">
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {ways.map(({ icon: Icon, title, body }) => (
-          <div key={title} className="bg-card rounded-xl p-6 shadow-card hover:shadow-elegant hover:-translate-y-1 transition-smooth">
-            <div className="h-12 w-12 rounded-full bg-accent-soft text-accent grid place-items-center mb-4">
-              <Icon className="h-6 w-6" />
-            </div>
-            <h3 className="font-bold text-foreground">{title}</h3>
-            <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{body}</p>
-          </div>
+        {ways.map(({ icon: Icon, title, body }, index) => (
+          <ScrollReveal key={title} direction="up" delay={index * 0.08} className="flex">
+            <HoverCard className="bg-card rounded-xl p-6 shadow-card border border-border/30 w-full flex flex-col justify-between group">
+              <div>
+                <div className="h-12 w-12 rounded-full bg-accent-soft text-accent grid place-items-center mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="font-bold text-foreground text-base md:text-lg">{title}</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{body}</p>
+              </div>
+            </HoverCard>
+          </ScrollReveal>
         ))}
       </div>
-      <div className="mt-14 bg-gradient-primary text-primary-foreground rounded-2xl p-10 text-center shadow-elegant">
-        <h2 className="text-2xl md:text-3xl font-extrabold">Ready to make a difference?</h2>
-        <p className="mt-3 opacity-90 max-w-xl mx-auto">Your support — in time, skills or contribution — directly changes lives across Pakistan.</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <Link to="/donate" className="inline-flex items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-6 py-3 rounded-md">Donate Now <ArrowRight className="h-4 w-4" /></Link>
-          <Link to="/contact" className="inline-flex items-center gap-2 bg-white/15 backdrop-blur border border-white/30 font-bold px-6 py-3 rounded-md hover:bg-white/25 transition-smooth">Contact Us <ArrowRight className="h-4 w-4" /></Link>
-        </div>
-      </div>
+      
+      <ScrollReveal direction="up" delay={0.2} className="mt-14">
+        <HoverCard className="bg-gradient-primary text-primary-foreground rounded-2xl p-10 text-center shadow-elegant">
+          <h2 className="text-2xl md:text-3xl font-extrabold">Ready to make a difference?</h2>
+          <p className="mt-3 opacity-90 max-w-xl mx-auto text-sm md:text-base">Your support — in time, skills or contribution — directly changes lives across Pakistan.</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Link to="/donate" className="inline-flex items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-6 py-3 rounded-md shadow-md hover:-translate-y-0.5 transition-smooth">Donate Now <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/contact" className="inline-flex items-center gap-2 bg-white/15 backdrop-blur border border-white/30 font-bold px-6 py-3 rounded-md hover:bg-white/25 transition-smooth">Contact Us <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </HoverCard>
+      </ScrollReveal>
     </PageShell>
   );
 }

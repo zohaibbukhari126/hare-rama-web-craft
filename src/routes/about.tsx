@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import { Target, Eye, Heart } from "lucide-react";
+import { ScrollReveal, HoverCard } from "@/components/ui/animation-wrappers";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -24,17 +25,20 @@ function AboutPage() {
   return (
     <PageShell eyebrow="WHO WE ARE" title="About Hare Rama Foundation" intro="Founded on the belief that every human being deserves dignity, opportunity and a voice, we serve the most marginalized communities across Pakistan.">
       <div className="grid md:grid-cols-3 gap-6">
-        {pillars.map(({ icon: Icon, title, body }) => (
-          <div key={title} className="bg-card rounded-xl p-7 shadow-card">
-            <div className="h-12 w-12 grid place-items-center rounded-full bg-accent-soft text-accent mb-4">
-              <Icon className="h-6 w-6" />
-            </div>
-            <h3 className="text-xl font-bold text-foreground">{title}</h3>
-            <p className="mt-3 text-muted-foreground leading-relaxed">{body}</p>
-          </div>
+        {pillars.map(({ icon: Icon, title, body }, index) => (
+          <ScrollReveal key={title} direction="up" delay={index * 0.1} className="h-full flex">
+            <HoverCard className="bg-card rounded-xl p-7 shadow-card border border-border/40 w-full flex flex-col group">
+              <div className="h-12 w-12 grid place-items-center rounded-full bg-accent-soft text-accent mb-4 transition-transform duration-300 group-hover:scale-110">
+                <Icon className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground">{title}</h3>
+              <p className="mt-3 text-muted-foreground leading-relaxed text-sm md:text-base">{body}</p>
+            </HoverCard>
+          </ScrollReveal>
         ))}
       </div>
-      <div className="mt-16 max-w-3xl">
+      
+      <ScrollReveal direction="up" delay={0.2} className="mt-16 max-w-3xl">
         <h2 className="text-2xl font-extrabold text-foreground">Our Story</h2>
         <p className="mt-4 text-muted-foreground leading-relaxed">
           Hare Rama Foundation Pakistan began with a simple commitment: to stand beside the people most often left behind. Over the years we have grown from grassroots community work into a national platform delivering programs in education, livelihoods, women's leadership, emergency response and rights advocacy.
@@ -42,7 +46,7 @@ function AboutPage() {
         <p className="mt-4 text-muted-foreground leading-relaxed">
           We collaborate with local communities, government bodies and international partners — including CARE, UN Women, Oxfam, UNHCR, SDPI and Sightsavers — to drive lasting change.
         </p>
-      </div>
+      </ScrollReveal>
     </PageShell>
   );
 }

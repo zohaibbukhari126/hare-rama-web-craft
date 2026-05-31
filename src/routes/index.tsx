@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import { BookOpen, Wrench, Users, LifeBuoy, Scale, ArrowRight, Heart, Play, GraduationCap, HandHeart, Activity } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import {
+  ScrollReveal,
+  CountUp,
+  FloatingShapes,
+  HoverCard,
+  AnimatedRippleButton,
+} from "@/components/ui/animation-wrappers";
 import heroImage from "@/assets/hero-education.jpg";
 import progEducation from "@/assets/program-education.jpg";
 import progSkills from "@/assets/program-skills.jpg";
@@ -29,7 +38,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <SiteHeader />
       <Hero />
       <StatsBar />
@@ -37,6 +46,7 @@ function Index() {
       <Programs />
       <Impact />
       <StoryAndDonate />
+      <SuccessStories />
       <News />
       <Partners />
       <SiteFooter />
@@ -45,31 +55,103 @@ function Index() {
 }
 
 function Hero() {
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
+  const textX = useMotionValue(0);
+  const textY = useMotionValue(0);
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      // Gentle parallax coordinate translation
+      const x = (e.clientX / window.innerWidth - 0.5) * 12;
+      const y = (e.clientY / window.innerHeight - 0.5) * 12;
+      setMouseCoords({ x, y });
+    };
+    window.addEventListener("mousemove", handleMove);
+    return () => window.removeEventListener("mousemove", handleMove);
+  }, []);
+
+  useEffect(() => {
+    textX.set(mouseCoords.x);
+    textY.set(mouseCoords.y);
+  }, [mouseCoords, textX, textY]);
+
+  // Framer motion stagged container
+  const heroVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 25 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 100, damping: 16 },
+    },
+  };
+
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden min-h-[500px] md:min-h-[600px] flex items-center">
       <div className="absolute inset-0">
-        <img src={heroImage} alt="Smiling Pakistani girl in school uniform" width={1600} height={900} className="h-full w-full object-cover" fetchPriority="high" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-deep/95 via-primary-deep/70 to-primary-deep/10" />
+        <img
+          src={heroImage}
+          alt="Smiling Pakistani girl in school uniform"
+          width={1600}
+          height={900}
+          className="h-full w-full object-cover scale-105"
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-deep/95 via-primary-deep/70 to-primary-deep/15" />
       </div>
-      <div className="relative container-wide py-24 md:py-32 lg:py-40">
-        <div className="max-w-2xl text-primary-foreground animate-fade-up">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05]">
+
+      {/* Floating backdrops decoration */}
+      <FloatingShapes />
+
+      <div className="relative container-wide py-20 md:py-28 lg:py-36 z-10 w-full">
+        <motion.div
+          style={{ x: textX, y: textY }}
+          variants={heroVariants}
+          initial="hidden"
+          animate="visible"
+          className="max-w-2xl text-primary-foreground"
+        >
+          <motion.h1
+            variants={itemVariants}
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] tracking-tight"
+          >
             Empowering<br />
             <span className="text-accent">Marginalized Communities</span><br />
             Building a Better Tomorrow
-          </h1>
-          <p className="mt-6 text-base sm:text-lg opacity-90 max-w-xl">
+          </motion.h1>
+
+          <motion.p
+            variants={itemVariants}
+            className="mt-6 text-base sm:text-lg opacity-90 max-w-xl leading-relaxed"
+          >
             We work for education, skill development, women empowerment, emergency relief and advocacy of the poor and marginalized communities across Pakistan.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link to="/donate" className="inline-flex items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-7 py-3.5 rounded-md shadow-elegant hover:-translate-y-0.5 transition-smooth">
-              DONATE NOW <Heart className="h-4 w-4 fill-current" />
+          </motion.p>
+
+          <motion.div variants={itemVariants} className="mt-8 flex flex-wrap gap-4">
+            <Link
+              to="/donate"
+              className="inline-flex items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-7 py-3.5 rounded-md shadow-elegant hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300"
+            >
+              DONATE NOW <Heart className="h-4 w-4 fill-current animate-pulse" />
             </Link>
-            <Link to="/programs" className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/30 text-primary-foreground font-bold px-7 py-3.5 rounded-md hover:bg-white/20 transition-smooth">
+            <Link
+              to="/programs"
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/30 text-primary-foreground font-bold px-7 py-3.5 rounded-md hover:bg-white/20 transition-all duration-300"
+            >
               EXPLORE OUR WORK <ArrowRight className="h-4 w-4" />
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
@@ -77,28 +159,38 @@ function Hero() {
 
 function StatsBar() {
   const stats = [
-    { label: "Today", value: "2,847" },
-    { label: "This Month", value: "68,493" },
-    { label: "This Year", value: "512,764" },
-    { label: "Total Visitors", value: "1,245,862+" },
+    { label: "Today", value: 2847 },
+    { label: "This Month", value: 68493 },
+    { label: "This Year", value: 512764 },
   ];
+
   return (
-    <section className="bg-primary text-primary-foreground">
-      <div className="container-wide py-6 grid grid-cols-2 md:grid-cols-5 gap-6 items-center">
-        <div className="flex items-center gap-3 col-span-2 md:col-span-1">
-          <Users className="h-9 w-9 text-accent" />
+    <section className="bg-primary text-primary-foreground relative z-20">
+      <div className="container-wide pt-6 pb-16 grid grid-cols-2 md:grid-cols-5 gap-6 items-center">
+        <ScrollReveal direction="left" className="flex items-center gap-3 col-span-2 md:col-span-2">
+          <Users className="h-9 w-9 text-accent shrink-0" />
           <div>
-            <div className="text-2xl font-extrabold text-accent">1,245,862+</div>
-            <div className="text-xs opacity-80">Visitors Around the World</div>
+            <div className="text-xl sm:text-2xl font-extrabold text-accent flex items-center">
+              <CountUp value={1245862} suffix="+" />
+            </div>
+            <div className="text-xs opacity-85">Visitors Around the World</div>
           </div>
-        </div>
-        {stats.map((s) => (
-          <div key={s.label} className="text-center md:text-left">
-            <div className="text-xs opacity-70 flex items-center gap-1.5 justify-center md:justify-start">
+        </ScrollReveal>
+
+        {stats.map((s, index) => (
+          <ScrollReveal
+            key={s.label}
+            direction="up"
+            delay={index * 0.08}
+            className="text-center md:text-left border-l border-white/10 pl-0 md:pl-6 first-of-type:border-none"
+          >
+            <div className="text-xs opacity-75 flex items-center gap-1.5 justify-center md:justify-start">
               <Activity className="h-3 w-3" /> {s.label}
             </div>
-            <div className="text-xl font-extrabold text-accent">{s.value}</div>
-          </div>
+            <div className="text-lg sm:text-xl font-extrabold text-accent mt-0.5">
+              <CountUp value={s.value} />
+            </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -115,19 +207,31 @@ const focusAreas = [
 
 function FocusAreas() {
   return (
-    <section className="container-wide -mt-10 relative z-10">
+    <section className="container-wide -mt-10 relative z-30">
       <div className="bg-card rounded-xl shadow-elegant grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-border overflow-hidden">
-        {focusAreas.map(({ icon: Icon, title, desc, tint }) => (
-          <div key={title} className="p-6 hover:bg-secondary/60 transition-smooth">
-            <div className={`h-12 w-12 rounded-full grid place-items-center ${tint} mb-4`}>
-              <Icon className="h-5 w-5" />
-            </div>
-            <h3 className="font-bold text-foreground">{title}</h3>
-            <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{desc}</p>
-            <Link to="/programs" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-accent transition-smooth">
-              Learn More <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
+        {focusAreas.map(({ icon: Icon, title, desc, tint }, index) => (
+          <ScrollReveal
+            key={title}
+            direction="up"
+            delay={index * 0.06}
+            className="h-full flex"
+          >
+            <HoverCard className="p-6 bg-card w-full flex flex-col justify-between hover:bg-secondary/40 transition-colors duration-300">
+              <div>
+                <div className={`h-12 w-12 rounded-full grid place-items-center ${tint} mb-4 transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-bold text-foreground text-base md:text-lg">{title}</h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
+              </div>
+              <Link
+                to="/programs"
+                className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-accent transition-smooth"
+              >
+                Learn More <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </HoverCard>
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -144,7 +248,7 @@ const programs = [
 function Programs() {
   return (
     <section className="container-wide py-20">
-      <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
+      <ScrollReveal direction="up" className="flex items-end justify-between flex-wrap gap-4 mb-10">
         <div>
           <p className="text-xs tracking-[0.2em] font-bold text-accent">WHAT WE DO</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mt-2">Our Programs</h2>
@@ -152,24 +256,43 @@ function Programs() {
         <Link to="/programs" className="inline-flex items-center gap-1 font-semibold text-primary hover:text-accent transition-smooth">
           View All Programs <ArrowRight className="h-4 w-4" />
         </Link>
-      </div>
+      </ScrollReveal>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {programs.map(({ img, icon: Icon, title, desc, tint }) => (
-          <article key={title} className="group bg-card rounded-xl overflow-hidden shadow-card hover:shadow-elegant hover:-translate-y-1 transition-smooth">
-            <div className="relative h-48 overflow-hidden">
-              <img src={img} alt={title} width={800} height={600} loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-smooth" />
-              <div className={`absolute -bottom-5 left-5 h-10 w-10 rounded-full grid place-items-center text-white ${tint} shadow-elegant`}>
-                <Icon className="h-5 w-5" />
+        {programs.map(({ img, icon: Icon, title, desc, tint }, index) => (
+          <ScrollReveal key={title} direction="up" delay={index * 0.08} className="flex">
+            <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/40 w-full flex flex-col justify-between group">
+              <div>
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={img}
+                    alt={title}
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    className={`absolute -bottom-5 left-5 h-10 w-10 rounded-full grid place-items-center text-white ${tint} shadow-elegant transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </div>
+                </div>
+                <div className="p-6 pt-7">
+                  <h3 className="font-bold text-lg text-foreground">{title}</h3>
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
+                </div>
               </div>
-            </div>
-            <div className="p-6 pt-7">
-              <h3 className="font-bold text-lg text-foreground">{title}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
-              <Link to="/programs" className="mt-4 inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-smooth">
-                READ MORE <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </article>
+              <div className="p-6 pt-0">
+                <Link
+                  to="/programs"
+                  className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-smooth"
+                >
+                  READ MORE <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </HoverCard>
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -177,24 +300,26 @@ function Programs() {
 }
 
 const impact = [
-  { icon: Users, value: "50,000+", label: "Lives Impacted" },
-  { icon: GraduationCap, value: "200+", label: "Education Centers" },
-  { icon: Wrench, value: "5,000+", label: "Youth Trained" },
-  { icon: HandHeart, value: "3,000+", label: "Women Empowered" },
-  { icon: LifeBuoy, value: "100+", label: "Relief Operations" },
+  { icon: Users, value: 50000, label: "Lives Impacted", suffix: "+" },
+  { icon: GraduationCap, value: 200, label: "Education Centers", suffix: "+" },
+  { icon: Wrench, value: 5000, label: "Youth Trained", suffix: "+" },
+  { icon: HandHeart, value: 3000, label: "Women Empowered", suffix: "+" },
+  { icon: LifeBuoy, value: 100, label: "Relief Operations", suffix: "+" },
 ];
 
 function Impact() {
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-primary" />
-      <div className="relative container-wide py-14 grid grid-cols-2 md:grid-cols-5 gap-8 text-primary-foreground">
-        {impact.map(({ icon: Icon, value, label }) => (
-          <div key={label} className="text-center">
-            <Icon className="h-8 w-8 mx-auto opacity-90" />
-            <div className="text-3xl font-extrabold text-accent mt-2">{value}</div>
+      <div className="relative container-wide py-14 grid grid-cols-2 md:grid-cols-5 gap-8 text-primary-foreground z-10">
+        {impact.map(({ icon: Icon, value, label, suffix }, index) => (
+          <ScrollReveal key={label} direction="up" delay={index * 0.06} className="text-center">
+            <Icon className="h-8 w-8 mx-auto opacity-90 transition-transform duration-300 hover:scale-110" />
+            <div className="text-3xl font-extrabold text-accent mt-2 flex items-center justify-center">
+              <CountUp value={value} suffix={suffix} />
+            </div>
             <div className="text-xs sm:text-sm opacity-90 mt-1">{label}</div>
-          </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -204,43 +329,236 @@ function Impact() {
 function StoryAndDonate() {
   return (
     <section className="container-wide py-20 grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-      <div className="relative rounded-xl overflow-hidden shadow-card group">
-        <img src={storyImage} alt="Young girl reading" width={800} height={600} loading="lazy" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/70 to-transparent" />
-        <button className="absolute inset-0 grid place-items-center" aria-label="Play story">
-          <span className="h-16 w-16 rounded-full bg-white/95 grid place-items-center shadow-elegant group-hover:scale-110 transition-smooth">
-            <Play className="h-6 w-6 text-primary fill-current ml-1" />
+      {/* Video Block with micro-interactions */}
+      <ScrollReveal direction="left" className="relative rounded-xl overflow-hidden shadow-card group">
+        <img
+          src={storyImage}
+          alt="Young girl reading"
+          width={800}
+          height={600}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/80 to-transparent" />
+        <button
+          className="absolute inset-0 grid place-items-center cursor-pointer"
+          aria-label="Play story"
+        >
+          <span className="h-16 w-16 rounded-full bg-white/95 text-primary grid place-items-center shadow-elegant transition-transform duration-300 group-hover:scale-110">
+            <Play className="h-6 w-6 fill-current ml-1" />
           </span>
         </button>
         <span className="absolute bottom-5 left-5 bg-gradient-accent text-accent-foreground text-xs font-bold tracking-wider px-3 py-1.5 rounded">
           WATCH OUR STORY
         </span>
-      </div>
+      </ScrollReveal>
 
-      <div className="bg-card rounded-xl p-8 shadow-card flex flex-col justify-center">
-        <p className="text-xs tracking-[0.2em] font-bold text-accent">OUR STORY</p>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mt-3 leading-tight">
-          Working for a Just, Inclusive and Compassionate Society
-        </h2>
-        <p className="text-muted-foreground mt-4 leading-relaxed">
-          Hare Rama Foundation Pakistan believes in the dignity of every human being. We work for the uplift of marginalized communities by creating opportunities, raising voices and influencing policies for a better and equitable Pakistan.
-        </p>
-        <Link to="/about" className="mt-6 self-start inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold px-6 py-3 rounded-md hover:bg-primary-deep transition-smooth">
-          ABOUT US <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      <div className="relative rounded-xl overflow-hidden shadow-elegant bg-primary-deep text-primary-foreground p-8 flex flex-col justify-between min-h-[320px]">
-        <div>
-          <h3 className="text-2xl font-extrabold">Support Our Cause</h3>
-          <p className="text-sm opacity-90 mt-3 leading-relaxed">
-            Your donation can bring hope and change lives. Together we can build a better tomorrow.
+      {/* Narrative Info Card */}
+      <ScrollReveal direction="up" delay={0.1} className="flex">
+        <HoverCard className="bg-card rounded-xl p-8 shadow-card flex flex-col justify-center w-full border border-border/30">
+          <p className="text-xs tracking-[0.2em] font-bold text-accent">OUR STORY</p>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mt-3 leading-tight">
+            Working for a Just, Inclusive and Compassionate Society
+          </h2>
+          <p className="text-muted-foreground mt-4 leading-relaxed text-sm md:text-base">
+            Hare Rama Foundation Pakistan believes in the dignity of every human being. We work for the uplift of marginalized communities by creating opportunities, raising voices and influencing policies for a better and equitable Pakistan.
           </p>
-          <Link to="/donate" className="mt-6 inline-flex items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-6 py-3 rounded-md hover:-translate-y-0.5 transition-smooth">
-            DONATE NOW <Heart className="h-4 w-4 fill-current" />
+          <Link
+            to="/about"
+            className="mt-6 self-start inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold px-6 py-3 rounded-md hover:bg-primary-deep transition-smooth"
+          >
+            ABOUT US <ArrowRight className="h-4 w-4" />
           </Link>
+        </HoverCard>
+      </ScrollReveal>
+
+      {/* Staged CTA Box */}
+      <ScrollReveal direction="right" className="flex">
+        <HoverCard className="relative rounded-xl overflow-hidden shadow-elegant bg-primary-deep text-primary-foreground p-8 flex flex-col justify-between min-h-[320px] w-full">
+          <div>
+            <h3 className="text-2xl font-extrabold">Support Our Cause</h3>
+            <p className="text-sm opacity-90 mt-3 leading-relaxed">
+              Your donation can bring hope and change lives. Together we can build a better tomorrow.
+            </p>
+            <Link
+              to="/donate"
+              className="mt-6 inline-flex items-center gap-2 bg-gradient-accent text-accent-foreground font-bold px-6 py-3 rounded-md hover:-translate-y-0.5 hover:shadow-lg transition-smooth"
+            >
+              DONATE NOW <Heart className="h-4 w-4 fill-current" />
+            </Link>
+          </div>
+          <img
+            src={supportImage}
+            alt=""
+            width={400}
+            height={300}
+            loading="lazy"
+            className="absolute right-0 bottom-0 w-40 h-40 object-cover opacity-35 rounded-tl-3xl pointer-events-none transition-transform duration-700 hover:scale-105"
+          />
+        </HoverCard>
+      </ScrollReveal>
+    </section>
+  );
+}
+
+const stories = [
+  {
+    name: "Zainab Bibi",
+    role: "Boutique Owner, Lahore",
+    image: storyImage,
+    program: "Women Empowerment",
+    quote: "The vocational training at Hare Rama Foundation completely changed my life. I learned stitching and business basics, and today I own a local tailoring shop employing three other women in my village.",
+  },
+  {
+    name: "Kashif Ali",
+    role: "Grade 6 Student, Sindh",
+    image: news3,
+    program: "Education Program",
+    quote: "I thought I would never go to school. But the Foundation sponsored my fees and books, and now I am learning science and computers. I want to become an engineer to serve my country.",
+  },
+  {
+    name: "Amina Swati",
+    role: "Community Leader, Swat",
+    image: news2,
+    program: "Emergency Relief",
+    quote: "During the floods, our houses were destroyed. Hare Rama Foundation didn't just give us food; they helped us rebuild our houses and provided sewing machines so we could start earning again.",
+  },
+];
+
+function SuccessStories() {
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0); // -1 = left, 1 = right
+
+  const nextStep = () => {
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % stories.length);
+  };
+
+  const prevStep = () => {
+    setDirection(-1);
+    setIndex((prev) => (prev - 1 + stories.length) % stories.length);
+  };
+
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 250 : -250,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        x: { type: "spring", stiffness: 350, damping: 28 },
+        opacity: { duration: 0.25 },
+      },
+    },
+    exit: (dir: number) => ({
+      x: dir < 0 ? 250 : -250,
+      opacity: 0,
+      transition: {
+        x: { type: "spring", stiffness: 350, damping: 28 },
+        opacity: { duration: 0.25 },
+      },
+    }),
+  };
+
+  return (
+    <section className="bg-secondary/40 py-20 overflow-hidden relative">
+      <div className="container-wide">
+        <ScrollReveal direction="up" className="text-center mb-12">
+          <p className="text-xs tracking-[0.2em] font-bold text-accent">SUCCESS STORIES</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mt-2">Lives Transformed</h2>
+        </ScrollReveal>
+
+        <div className="relative max-w-4xl mx-auto bg-card rounded-2xl shadow-card border border-border/30 overflow-hidden md:flex min-h-[380px]">
+          {/* Animated Carousel Contents */}
+          <AnimatePresence initial={false} custom={direction} mode="wait">
+            <motion.div
+              key={index}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="w-full md:flex cursor-grab active:cursor-grabbing"
+              // Adding swipe gestures
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.4}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = offset.x * velocity.x;
+                if (swipe < -200) {
+                  nextStep();
+                } else if (swipe > 200) {
+                  prevStep();
+                }
+              }}
+            >
+              {/* Left: Image container */}
+              <div className="md:w-2/5 relative h-64 md:h-auto overflow-hidden">
+                <img
+                  src={stories[index].image}
+                  alt={stories[index].name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/60 to-transparent md:hidden" />
+              </div>
+
+              {/* Right: Text panel */}
+              <div className="p-8 md:p-12 md:w-3/5 flex flex-col justify-between bg-card">
+                <div>
+                  <span className="bg-accent-soft text-accent text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    {stories[index].program}
+                  </span>
+                  <blockquote className="mt-6 text-sm md:text-base text-muted-foreground italic leading-relaxed">
+                    "{stories[index].quote}"
+                  </blockquote>
+                </div>
+                <div className="mt-6">
+                  <cite className="not-italic font-extrabold text-foreground text-base md:text-lg block">
+                    {stories[index].name}
+                  </cite>
+                  <span className="text-xs text-muted-foreground block mt-0.5">
+                    {stories[index].role}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevStep}
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-foreground p-3 rounded-full shadow-md z-10 transition-colors hidden md:block hover:scale-105 active:scale-95"
+            aria-label="Previous story"
+          >
+            ←
+          </button>
+          <button
+            onClick={nextStep}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-foreground p-3 rounded-full shadow-md z-10 transition-colors hidden md:block hover:scale-105 active:scale-95"
+            aria-label="Next story"
+          >
+            →
+          </button>
         </div>
-        <img src={supportImage} alt="" width={400} height={300} loading="lazy" className="absolute right-0 bottom-0 w-40 h-40 object-cover opacity-50 rounded-tl-3xl pointer-events-none" />
+
+        {/* Dynamic dots selector */}
+        <div className="flex justify-center gap-2 mt-8 z-10 relative">
+          {stories.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > index ? 1 : -1);
+                setIndex(i);
+              }}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                i === index ? "bg-accent w-6" : "bg-muted-foreground/30 w-2.5 hover:bg-muted-foreground/50"
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -255,26 +573,43 @@ const news = [
 function News() {
   return (
     <section className="container-wide pb-20">
-      <div className="flex items-end justify-between mb-8">
+      <ScrollReveal direction="up" className="flex items-end justify-between mb-8 flex-wrap gap-3">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">Latest News & Updates</h2>
         <Link to="/media" className="inline-flex items-center gap-1 font-semibold text-primary hover:text-accent transition-smooth">
           View All News <ArrowRight className="h-4 w-4" />
         </Link>
-      </div>
+      </ScrollReveal>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {news.map((n) => (
-          <article key={n.title} className="bg-card rounded-xl overflow-hidden shadow-card hover:shadow-elegant transition-smooth group">
-            <div className="h-48 overflow-hidden">
-              <img src={n.img} alt={n.title} width={768} height={512} loading="lazy" className="h-full w-full object-cover group-hover:scale-105 transition-smooth" />
-            </div>
-            <div className="p-5">
-              <div className="text-xs text-accent font-semibold">{n.date}</div>
-              <h3 className="font-bold text-foreground mt-2 leading-snug">{n.title}</h3>
-              <Link to="/media" className="mt-3 inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent">
-                READ MORE <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </article>
+        {news.map((n, index) => (
+          <ScrollReveal key={n.title} direction="up" delay={index * 0.08} className="flex">
+            <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/30 w-full flex flex-col justify-between group">
+              <div>
+                <div className="h-48 overflow-hidden relative">
+                  <img
+                    src={n.img}
+                    alt={n.title}
+                    width={768}
+                    height={512}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5">
+                  <div className="text-xs text-accent font-semibold">{n.date}</div>
+                  <h3 className="font-bold text-foreground mt-2 leading-snug">{n.title}</h3>
+                </div>
+              </div>
+              <div className="p-5 pt-0">
+                <Link
+                  to="/media"
+                  className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-colors duration-300"
+                >
+                  READ MORE <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </HoverCard>
+          </ScrollReveal>
         ))}
       </div>
     </section>
@@ -283,16 +618,23 @@ function News() {
 
 function Partners() {
   const partners = ["CARE", "UN WOMEN", "Oxfam", "UNHCR", "SDPI", "Sightsavers"];
+  
   return (
     <section className="container-wide pb-16">
-      <h2 className="text-center text-xl font-bold text-foreground mb-8">Our Partners</h2>
+      <ScrollReveal direction="up">
+        <h2 className="text-center text-xl font-bold text-foreground mb-8">Our Partners</h2>
+      </ScrollReveal>
+      
       <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-80">
-        {partners.map((p) => (
-          <div key={p} className="text-lg font-extrabold tracking-tight text-muted-foreground hover:text-primary transition-smooth">
-            {p}
-          </div>
+        {partners.map((p, index) => (
+          <ScrollReveal key={p} direction="up" delay={index * 0.05}>
+            <div className="text-lg font-extrabold tracking-tight text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-105 cursor-pointer">
+              {p}
+            </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>
   );
 }
+

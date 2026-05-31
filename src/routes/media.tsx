@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
+import { ScrollReveal, HoverCard } from "@/components/ui/animation-wrappers";
 import news1 from "@/assets/news-1.jpg";
 import news2 from "@/assets/news-2.jpg";
 import news3 from "@/assets/news-3.jpg";
@@ -27,17 +28,28 @@ function MediaPage() {
   return (
     <PageShell eyebrow="MEDIA CENTER" title="Latest News & Updates">
       <div className="grid md:grid-cols-3 gap-8">
-        {items.map((n) => (
-          <article key={n.title} className="bg-card rounded-xl overflow-hidden shadow-card hover:shadow-elegant transition-smooth">
-            <div className="h-52 overflow-hidden">
-              <img src={n.img} alt={n.title} width={768} height={512} loading="lazy" className="h-full w-full object-cover" />
-            </div>
-            <div className="p-6">
-              <div className="text-xs text-accent font-semibold">{n.date}</div>
-              <h3 className="font-bold text-lg text-foreground mt-2">{n.title}</h3>
-              <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{n.body}</p>
-            </div>
-          </article>
+        {items.map((n, index) => (
+          <ScrollReveal key={n.title} direction="up" delay={index * 0.1} className="flex">
+            <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/30 w-full flex flex-col justify-between group">
+              <div>
+                <div className="h-52 overflow-hidden relative">
+                  <img
+                    src={n.img}
+                    alt={n.title}
+                    width={768}
+                    height={512}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-6">
+                  <div className="text-xs text-accent font-semibold">{n.date}</div>
+                  <h3 className="font-bold text-lg text-foreground mt-2 leading-snug">{n.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-3 leading-relaxed">{n.body}</p>
+                </div>
+              </div>
+            </HoverCard>
+          </ScrollReveal>
         ))}
       </div>
     </PageShell>

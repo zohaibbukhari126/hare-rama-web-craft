@@ -198,7 +198,7 @@ function StatsBar() {
 }
 
 const focusAreas = [
-  { icon: BookOpen, title: "Education", desc: "Quality education for underprivileged children and youth.", tint: "bg-emerald-100 text-emerald-700" },
+  { icon: BookOpen, title: "Education", desc: "Quality education for underprivileged children and youth.", tint: "bg-brand-7/40 text-brand-1" },
   { icon: Wrench, title: "Skill Development", desc: "Vocational training and skills for a self-reliant future.", tint: "bg-orange-100 text-orange-700" },
   { icon: Users, title: "Women Empowerment", desc: "Empowering women for leadership and economic independence.", tint: "bg-rose-100 text-rose-700" },
   { icon: LifeBuoy, title: "Emergency Relief", desc: "Providing immediate relief and support in times of crisis.", tint: "bg-sky-100 text-sky-700" },
@@ -239,7 +239,7 @@ function FocusAreas() {
 }
 
 const programs = [
-  { img: progEducation, icon: BookOpen, title: "Education", desc: "We run schools, learning centers and scholarship programs to ensure quality education for marginalized children.", tint: "bg-emerald-600" },
+  { img: progEducation, icon: BookOpen, title: "Education", desc: "We run schools, learning centers and scholarship programs to ensure quality education for marginalized children.", tint: "bg-brand-1" },
   { img: progSkills, icon: Wrench, title: "Skill Development", desc: "Vocational training, digital skills and entrepreneurship programs for youth to build better livelihoods.", tint: "bg-orange-500" },
   { img: progWomen, icon: Users, title: "Women Empowerment", desc: "Programs focused on women leadership, entrepreneurship, health awareness and rights protection.", tint: "bg-rose-500" },
   { img: progRelief, icon: LifeBuoy, title: "Emergency Relief", desc: "We provide food, shelter, medical aid and rehabilitation support during natural disasters and humanitarian crises.", tint: "bg-sky-500" },

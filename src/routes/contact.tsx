@@ -40,7 +40,7 @@ function ContactPage() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
-                  className="h-16 w-16 bg-emerald-100 text-emerald-600 rounded-full grid place-items-center mb-5 shadow-inner"
+                  className="h-16 w-16 bg-brand-7/40 text-brand-1 rounded-full grid place-items-center mb-5 shadow-inner"
                 >
                   <svg className="h-8 w-8 stroke-current fill-none stroke-[3px]" viewBox="0 0 24 24">
                     <motion.path

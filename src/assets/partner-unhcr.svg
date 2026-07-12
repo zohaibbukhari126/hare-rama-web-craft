@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <rect width="200" height="80" fill="white"/>
+  <rect x="8" y="12" width="56" height="56" rx="3" fill="#009FDA"/>
+  <text x="36" y="38" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="11" fill="white" text-anchor="middle">UN</text>
+  <text x="36" y="52" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="11" fill="white" text-anchor="middle">HCR</text>
+  <text x="130" y="35" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#666" text-anchor="middle">The UN Refugee</text>
+  <text x="130" y="50" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#666" text-anchor="middle">Agency</text>
+</svg>

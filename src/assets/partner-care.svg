@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <rect width="200" height="80" fill="white"/>
+  <rect x="10" y="10" width="60" height="60" rx="4" fill="#E5001C"/>
+  <text x="40" y="52" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="26" fill="white" text-anchor="middle">CARE</text>
+  <text x="120" y="38" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="#E5001C" text-anchor="middle">CARE</text>
+  <text x="120" y="54" font-family="Arial, sans-serif" font-weight="400" font-size="10" fill="#333" text-anchor="middle">INTERNATIONAL</text>
+</svg>

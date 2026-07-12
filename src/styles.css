@@ -213,4 +213,86 @@
     to { opacity: 1; transform: translateY(0); }
   }
   .animate-fade-up { animation: fade-up 0.7s cubic-bezier(0.4,0,0.2,1) both; }
+
+  @keyframes partner-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-200px * 6)); }
+  }
+
+  .partner-slider {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .partner-slider::before,
+  .partner-slider::after {
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 120px;
+    z-index: 2;
+    top: 0;
+    pointer-events: none;
+  }
+
+  .partner-slider::before {
+    background: linear-gradient(to right, var(--background) 0%, transparent 100%);
+    left: 0;
+  }
+
+  .partner-slider::after {
+    background: linear-gradient(to left, var(--background) 0%, transparent 100%);
+    right: 0;
+  }
+
+  .partner-slide-track {
+    display: flex;
+    animation: partner-scroll 30s linear infinite;
+    width: calc(200px * 12);
+  }
+  .partner-slide-track:hover { animation-play-state: paused; }
+
+  .partner-slide {
+    width: 200px;
+    flex-shrink: 0;
+    padding: 0 0.75rem;
+  }
+
+  /* Programs autoplay carousel */
+  @keyframes program-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(calc(-300px * 4)); }
+  }
+  .program-slide-track {
+    display: flex;
+    align-items: stretch;
+    animation: program-scroll 26s linear infinite;
+    width: calc(300px * 8);
+  }
+  .program-slide-track:hover { animation-play-state: paused; }
+  .program-slide {
+    width: 300px;
+    flex-shrink: 0;
+    padding: 0 0.75rem;
+    display: flex;
+  }
+
+  /* News autoplay carousel */
+  @keyframes news-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(calc(-380px * 3)); }
+  }
+  .news-slide-track {
+    display: flex;
+    align-items: stretch;
+    animation: news-scroll 20s linear infinite;
+    width: calc(380px * 6);
+  }
+  .news-slide-track:hover { animation-play-state: paused; }
+  .news-slide {
+    width: 380px;
+    flex-shrink: 0;
+    padding: 0 0.75rem;
+    display: flex;
+  }
 }

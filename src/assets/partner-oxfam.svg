@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <rect width="200" height="80" fill="white"/>
+  <circle cx="40" cy="40" r="28" fill="#61A534"/>
+  <text x="40" y="46" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="white" text-anchor="middle">Ox</text>
+  <text x="120" y="48" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="28" fill="#61A534" text-anchor="middle">Oxfam</text>
+</svg>

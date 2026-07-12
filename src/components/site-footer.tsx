@@ -14,9 +14,7 @@ export function SiteFooter() {
               <div className="text-[10px] tracking-[0.18em] opacity-80">FOUNDATION PAKISTAN</div>
             </div>
           </div>
-          <p className="text-sm opacity-80 leading-relaxed">
-            We are dedicated to uplifting marginalized communities through education, skill development, advocacy and humanitarian support.
-          </p>
+          
           <div className="flex items-center gap-3 mt-5">
             {[Facebook, Twitter, Instagram, Youtube, Linkedin].map((Icon, i) => (
               <a key={i} href="#" aria-label="social" className="h-9 w-9 grid place-items-center rounded-full bg-white/10 hover:bg-accent transition-smooth">

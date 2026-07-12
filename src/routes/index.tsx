@@ -12,6 +12,12 @@ import {
   HoverCard,
   AnimatedRippleButton,
 } from "@/components/ui/animation-wrappers";
+import partnerCare from "@/assets/partner-care.svg";
+import partnerUnwomen from "@/assets/partner-unwomen.svg";
+import partnerOxfam from "@/assets/partner-oxfam.svg";
+import partnerUnhcr from "@/assets/partner-unhcr.svg";
+import partnerSdpi from "@/assets/partner-sdpi.svg";
+import partnerSightsavers from "@/assets/partner-sightsavers.svg";
 import heroImage from "@/assets/hero-education.jpg";
 import progEducation from "@/assets/program-education.jpg";
 import progSkills from "@/assets/program-skills.jpg";
@@ -246,9 +252,11 @@ const programs = [
 ];
 
 function Programs() {
+  const doubled = [...programs, ...programs];
+
   return (
-    <section className="container-wide py-20">
-      <ScrollReveal direction="up" className="flex items-end justify-between flex-wrap gap-4 mb-10">
+    <section className="py-20 overflow-hidden">
+      <ScrollReveal direction="up" className="container-wide flex items-end justify-between flex-wrap gap-4 mb-10">
         <div>
           <p className="text-xs tracking-[0.2em] font-bold text-accent">WHAT WE DO</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mt-2">Our Programs</h2>
@@ -258,42 +266,39 @@ function Programs() {
         </Link>
       </ScrollReveal>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {programs.map(({ img, icon: Icon, title, desc, tint }, index) => (
-          <ScrollReveal key={title} direction="up" delay={index * 0.08} className="flex">
-            <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/40 w-full flex flex-col justify-between group">
-              <div>
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={img}
-                    alt={title}
-                    width={800}
-                    height={600}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div
-                    className={`absolute -bottom-5 left-5 h-10 w-10 rounded-full grid place-items-center text-white ${tint} shadow-elegant transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110`}
-                  >
-                    <Icon className="h-5 w-5" />
+      <div className="partner-slider">
+        <div className="program-slide-track">
+          {doubled.map(({ img, icon: Icon, title, desc, tint }, i) => (
+            <div key={i} className="program-slide">
+              <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/40 w-full flex flex-col justify-between group">
+                <div>
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={img}
+                      alt={title}
+                      width={800}
+                      height={600}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className={`absolute -bottom-5 left-5 h-10 w-10 rounded-full grid place-items-center text-white ${tint} shadow-elegant transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
+                  </div>
+                  <div className="p-6 pt-7">
+                    <h3 className="font-bold text-lg text-foreground">{title}</h3>
+                    <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
                   </div>
                 </div>
-                <div className="p-6 pt-7">
-                  <h3 className="font-bold text-lg text-foreground">{title}</h3>
-                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
+                <div className="p-6 pt-0">
+                  <Link to="/programs" className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-smooth">
+                    READ MORE <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
-              </div>
-              <div className="p-6 pt-0">
-                <Link
-                  to="/programs"
-                  className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-smooth"
-                >
-                  READ MORE <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </HoverCard>
-          </ScrollReveal>
-        ))}
+              </HoverCard>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -571,68 +576,91 @@ const news = [
 ];
 
 function News() {
+  const doubled = [...news, ...news];
+
   return (
-    <section className="container-wide pb-20">
-      <ScrollReveal direction="up" className="flex items-end justify-between mb-8 flex-wrap gap-3">
+    <section className="pb-20 overflow-hidden">
+      <ScrollReveal direction="up" className="container-wide flex items-end justify-between mb-8 flex-wrap gap-3">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">Latest News & Updates</h2>
         <Link to="/media" className="inline-flex items-center gap-1 font-semibold text-primary hover:text-accent transition-smooth">
           View All News <ArrowRight className="h-4 w-4" />
         </Link>
       </ScrollReveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {news.map((n, index) => (
-          <ScrollReveal key={n.title} direction="up" delay={index * 0.08} className="flex">
-            <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/30 w-full flex flex-col justify-between group">
-              <div>
-                <div className="h-48 overflow-hidden relative">
-                  <img
-                    src={n.img}
-                    alt={n.title}
-                    width={768}
-                    height={512}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+      <div className="partner-slider">
+        <div className="news-slide-track">
+          {doubled.map((n, i) => (
+            <div key={i} className="news-slide">
+              <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/30 w-full flex flex-col justify-between group">
+                <div>
+                  <div className="h-48 overflow-hidden relative">
+                    <img
+                      src={n.img}
+                      alt={n.title}
+                      width={768}
+                      height={512}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <div className="text-xs text-accent font-semibold">{n.date}</div>
+                    <h3 className="font-bold text-foreground mt-2 leading-snug">{n.title}</h3>
+                  </div>
                 </div>
-                <div className="p-5">
-                  <div className="text-xs text-accent font-semibold">{n.date}</div>
-                  <h3 className="font-bold text-foreground mt-2 leading-snug">{n.title}</h3>
+                <div className="p-5 pt-0">
+                  <Link
+                    to="/media"
+                    className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-colors duration-300"
+                  >
+                    READ MORE <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
-              </div>
-              <div className="p-5 pt-0">
-                <Link
-                  to="/media"
-                  className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-colors duration-300"
-                >
-                  READ MORE <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </HoverCard>
-          </ScrollReveal>
-        ))}
+              </HoverCard>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
 function Partners() {
-  const partners = ["CARE", "UN WOMEN", "Oxfam", "UNHCR", "SDPI", "Sightsavers"];
-  
+  const partners = [
+    { name: "CARE International", logo: partnerCare },
+    { name: "UN Women",           logo: partnerUnwomen },
+    { name: "Oxfam",              logo: partnerOxfam },
+    { name: "UNHCR",              logo: partnerUnhcr },
+    { name: "SDPI",               logo: partnerSdpi },
+    { name: "Sightsavers",        logo: partnerSightsavers },
+  ];
+
+  const doubled = [...partners, ...partners];
+
   return (
-    <section className="container-wide pb-16">
-      <ScrollReveal direction="up">
-        <h2 className="text-center text-xl font-bold text-foreground mb-8">Our Partners</h2>
-      </ScrollReveal>
-      
-      <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-80">
-        {partners.map((p, index) => (
-          <ScrollReveal key={p} direction="up" delay={index * 0.05}>
-            <div className="text-lg font-extrabold tracking-tight text-muted-foreground hover:text-primary transition-all duration-300 hover:scale-105 cursor-pointer">
-              {p}
+    <section className="pb-16 overflow-hidden">
+      <div className="container-wide mb-10 text-center">
+        <ScrollReveal direction="up">
+          <p className="text-xs tracking-[0.2em] font-bold text-accent">TRUSTED BY</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground mt-2">Our Partners & Supporters</h2>
+        </ScrollReveal>
+      </div>
+
+      <div className="partner-slider">
+        <div className="partner-slide-track">
+          {doubled.map((p, i) => (
+            <div key={i} className="partner-slide flex items-center justify-center">
+              <div className="h-16 w-full bg-card border border-border/50 rounded-lg flex items-center justify-center px-3 shadow-sm hover:shadow-card hover:border-primary/30 transition-all duration-300 cursor-default overflow-hidden">
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  className="max-h-10 w-auto object-contain"
+                  loading="lazy"
+                />
+              </div>
             </div>
-          </ScrollReveal>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

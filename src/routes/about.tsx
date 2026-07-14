@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { PageShell } from "@/components/page-shell";
-import { Target, Eye, Heart, Users, Activity, HandHeart, Scale } from "lucide-react";
+import { Target, Eye, Heart, Users, Activity, HandHeart, Scale, ChevronDown } from "lucide-react";
 import { ScrollReveal, HoverCard } from "@/components/ui/animation-wrappers";
 
 // Import team headshots
@@ -22,7 +24,105 @@ export const Route = createFileRoute("/about")({
   component: AboutPage,
 });
 
+type TeamMember = {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+};
+
+function TypewriterBio({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(id);
+        setDone(true);
+      }
+    }, 11);
+    return () => clearInterval(id);
+  }, [text]);
+
+  return (
+    <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+      {displayed}
+      {!done && (
+        <span className="inline-block w-[2px] h-[1em] bg-primary ml-0.5 align-middle animate-pulse" />
+      )}
+    </p>
+  );
+}
+
+function TeamCard({ member, isActive, onClick }: { member: TeamMember; isActive: boolean; onClick: () => void }) {
+  return (
+    <motion.article
+      layout
+      onClick={onClick}
+      className={`rounded-2xl overflow-hidden cursor-pointer select-none border-2 bg-card transition-colors duration-300 ${
+        isActive
+          ? "col-span-2 lg:col-span-4 border-primary shadow-elegant"
+          : "col-span-1 border-transparent shadow-card hover:border-border"
+      }`}
+      transition={{ layout: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
+    >
+      <div className={`flex h-full min-h-[18rem] ${isActive ? "flex-row" : "flex-col"}`}>
+
+        {/* Portrait — always visible */}
+        <div className={`relative flex-shrink-0 overflow-hidden ${isActive ? "w-48 lg:w-64" : "w-full h-72"}`}>
+          <img
+            src={member.image}
+            alt={`${member.name} — ${member.role}`}
+            className={`w-full h-full object-cover object-top transition-all duration-500 ${
+              isActive ? "grayscale-0" : "grayscale hover:grayscale-[40%]"
+            }`}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+          <div className="absolute bottom-0 inset-x-0 p-4">
+            <p className="text-[10px] text-accent font-extrabold tracking-[0.18em] uppercase mb-0.5">{member.role}</p>
+            <h4 className="text-white font-extrabold text-base leading-tight">{member.name}</h4>
+          </div>
+          <div className={`absolute top-3 right-3 h-6 w-6 rounded-full grid place-items-center shadow-md transition-all duration-300 ${
+            isActive ? "bg-primary" : "bg-white/20 backdrop-blur-sm"
+          }`}>
+            <ChevronDown className={`h-3.5 w-3.5 text-white transition-transform duration-300 ${isActive ? "rotate-180" : ""}`} />
+          </div>
+        </div>
+
+        {/* Bio — slides in to the right when expanded */}
+        <AnimatePresence>
+          {isActive && (
+            <motion.div
+              key="bio"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              className="flex-1 px-7 py-8 md:px-10 md:py-10 flex flex-col justify-center overflow-hidden"
+            >
+              <span className="text-[11px] text-accent font-extrabold tracking-[0.2em] uppercase">
+                {member.role}
+              </span>
+              <h3 className="text-xl md:text-2xl font-extrabold text-foreground mt-1">{member.name}</h3>
+              <div className="w-10 h-[2px] bg-accent rounded-full mt-3 mb-5" />
+              <TypewriterBio key={member.name} text={member.bio} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.article>
+  );
+}
+
 function AboutPage() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
   const pillars = [
     { icon: Target, title: "Our Mission", body: "To empower marginalized communities through education, skills, advocacy and humanitarian support — ensuring dignity and opportunity for all." },
     { icon: Eye, title: "Our Vision", body: "A just, inclusive and compassionate Pakistan where every individual can realize their full potential." },
@@ -89,97 +189,18 @@ function AboutPage() {
       {/* Leadership & Staff Segment */}
       <ScrollReveal direction="up" delay={0.3} className="mt-20">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground mb-1">Our Leadership & Team</h2>
-        <p className="text-muted-foreground text-sm md:text-base mb-8">The dedicated activists, medical practitioners, and coordinators driving our mission forward.</p>
+        <p className="text-muted-foreground text-sm md:text-base mb-8">
+          Click a portrait — the bio opens right below it, pushing other cards down.
+        </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Prominent Founder Highlight Card */}
-          <div className="md:col-span-3">
-            <HoverCard className="bg-gradient-to-br from-primary-deep/95 via-primary-deep/80 to-primary/45 text-primary-foreground rounded-xl p-8 shadow-elegant relative overflow-hidden group">
-              <div className="relative z-10 lg:grid lg:grid-cols-12 gap-8 items-stretch">
-                <div className="lg:col-span-4 relative min-h-[320px] overflow-hidden rounded-xl bg-muted/20 border border-white/20 shadow-2xl shrink-0 mb-6 lg:mb-0">
-                  <img
-                    src={rameshJaipal}
-                    alt="Ramesh Jaipal - Founder & Executive Director of Hare Rama Foundation"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-4 left-4 bg-accent text-accent-foreground text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-                    Founder
-                  </div>
-                </div>
-                
-                <div className="lg:col-span-8 flex flex-col justify-center">
-                  <span className="text-accent text-xs font-extrabold uppercase tracking-widest border-b border-accent/20 pb-2 mb-3 inline-block">
-                    FOUNDER & EXECUTIVE DIRECTOR
-                  </span>
-                  <h3 className="text-3xl font-extrabold text-white">Ramesh Jaipal</h3>
-                  <p className="text-sm text-accent-foreground/90 italic mt-1 font-semibold">
-                    Pakistani Social & Human Rights Activist • Hubert H. Humphrey Fellow • Scheduled Caste Rights Chairman
-                  </p>
-                  
-                  {/* Founder Quote block */}
-                  <blockquote className="mt-4 border-l-4 border-accent pl-4 italic text-sm md:text-base text-white/95 leading-relaxed bg-white/5 py-3 pr-3 rounded-r-lg">
-                    “Our mission is not merely to provide temporary relief, but to dismantle the systemic barriers that prevent religious minorities and marginalized groups from achieving equal rights and representation in Pakistan.”
-                  </blockquote>
-
-                  <p className="mt-4 leading-relaxed text-sm md:text-base text-white/90">
-                    Ramesh Jaipal is a prominent Pakistani social and human rights activist widely recognized for his advocacy on behalf of marginalized communities and religious minorities in the Sindh and Punjab regions. As the Chairman of the Scheduled Caste Rights Movement and founder of the Hare Rama Foundation, he played a historic legislative role in drafting and campaigning for the landmark <strong>Hindu Marriage Bill</strong>, securing legal marriage recognition for Hindu minorities.
-                  </p>
-                  <p className="mt-3 leading-relaxed text-sm md:text-base text-white/90">
-                    His work focuses on establishing residential land rights, enforcing minority job quotas, conducting sociological research on Dalits and minorities, and coordinating major humanitarian flood relief operations. He speaks globally to advocate for inclusion and religious tolerance.
-                  </p>
-                  
-                  {/* Highlights list inside the card */}
-                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 pt-6 border-t border-white/10 text-xs">
-                    <div className="flex items-center gap-2 text-white/90">
-                      <span className="h-2 w-2 rounded-full bg-accent shrink-0" />
-                      <span>Hubert H. Humphrey Fellow Alumni</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white/90">
-                      <span className="h-2 w-2 rounded-full bg-accent shrink-0" />
-                      <span>Chairman, Scheduled Caste Rights Movement</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white/90">
-                      <span className="h-2 w-2 rounded-full bg-accent shrink-0" />
-                      <span>Pioneered historic Pakistan Hindu Marriage Bill</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white/90">
-                      <span className="h-2 w-2 rounded-full bg-accent shrink-0" />
-                      <span>Directed large-scale flood relief & health programs</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="absolute right-0 bottom-0 text-white/5 font-extrabold text-9xl pointer-events-none select-none translate-x-10 translate-y-10" aria-hidden="true">
-                HRF
-              </div>
-            </HoverCard>
-          </div>
-
-          {/* Doctors & Volunteers Subgrid */}
-          {team.slice(1).map((t, index) => (
-            <ScrollReveal key={t.name} direction="up" delay={index * 0.08} className="flex">
-              <HoverCard className="bg-card rounded-xl shadow-card border border-border/30 w-full flex flex-col justify-between overflow-hidden group">
-                <div className="relative h-64 w-full overflow-hidden bg-muted">
-                  <img
-                    src={t.image}
-                    alt={`${t.name} - ${t.role}`}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute bottom-3 right-3 h-10 w-10 rounded-full bg-accent text-accent-foreground grid place-items-center shadow-md backdrop-blur-sm z-10 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" aria-hidden="true">
-                    <t.icon className="h-5 w-5" />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
-                </div>
-                <div className="p-6 flex flex-col flex-grow justify-between">
-                  <div>
-                    <span className="text-[10px] text-accent font-extrabold tracking-widest uppercase mb-1 inline-block">{t.role}</span>
-                    <h4 className="font-extrabold text-foreground text-lg leading-tight mb-2">{t.name}</h4>
-                    <p className="mt-1 text-muted-foreground text-xs md:text-sm leading-relaxed">{t.bio}</p>
-                  </div>
-                </div>
-              </HoverCard>
-            </ScrollReveal>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 items-start">
+          {team.map((member, index) => (
+            <TeamCard
+              key={member.name}
+              member={member}
+              isActive={openIndex === index}
+              onClick={() => setOpenIndex(prev => prev === index ? null : index)}
+            />
           ))}
         </div>
       </ScrollReveal>

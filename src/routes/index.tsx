@@ -251,12 +251,47 @@ const programs = [
   { img: progRelief, icon: LifeBuoy, title: "Emergency Relief", desc: "We provide food, shelter, medical aid and rehabilitation support during natural disasters and humanitarian crises.", tint: "bg-sky-500" },
 ];
 
-function Programs() {
-  const doubled = [...programs, ...programs];
+const programImages = programs.map(p => p.img);
+
+const imgSlideVariants = {
+  enter:  { x: "100%", opacity: 0 },
+  center: { x: 0, opacity: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  exit:   { x: "-100%", opacity: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+};
+
+function ProgramImageSlider({ startIndex }: { startIndex: number }) {
+  const [imgIdx, setImgIdx] = useState(startIndex);
+
+  useEffect(() => {
+    const delay = 3500 + startIndex * 900;
+    const id = setInterval(() => setImgIdx(prev => (prev + 1) % programImages.length), delay);
+    return () => clearInterval(id);
+  }, [startIndex]);
 
   return (
-    <section className="py-20 overflow-hidden">
-      <ScrollReveal direction="up" className="container-wide flex items-end justify-between flex-wrap gap-4 mb-10">
+    <div className="relative h-48 overflow-hidden">
+      <AnimatePresence initial={false} mode="wait">
+        <motion.img
+          key={imgIdx}
+          src={programImages[imgIdx]}
+          alt=""
+          width={800}
+          height={600}
+          className="absolute inset-0 h-full w-full object-cover"
+          variants={imgSlideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+        />
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function Programs() {
+  return (
+    <section className="container-wide py-20">
+      <ScrollReveal direction="up" className="flex items-end justify-between flex-wrap gap-4 mb-10">
         <div>
           <p className="text-xs tracking-[0.2em] font-bold text-accent">WHAT WE DO</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground mt-2">Our Programs</h2>
@@ -266,39 +301,30 @@ function Programs() {
         </Link>
       </ScrollReveal>
 
-      <div className="partner-slider">
-        <div className="program-slide-track">
-          {doubled.map(({ img, icon: Icon, title, desc, tint }, i) => (
-            <div key={i} className="program-slide">
-              <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/40 w-full flex flex-col justify-between group">
-                <div>
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={img}
-                      alt={title}
-                      width={800}
-                      height={600}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className={`absolute -bottom-5 left-5 h-10 w-10 rounded-full grid place-items-center text-white ${tint} shadow-elegant transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110`}>
-                      <Icon className="h-5 w-5" />
-                    </div>
-                  </div>
-                  <div className="p-6 pt-7">
-                    <h3 className="font-bold text-lg text-foreground">{title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {programs.map(({ icon: Icon, title, desc, tint }, index) => (
+          <ScrollReveal key={title} direction="up" delay={index * 0.08} className="flex">
+            <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/40 w-full flex flex-col justify-between group">
+              <div>
+                <div className="relative">
+                  <ProgramImageSlider startIndex={index} />
+                  <div className={`absolute -bottom-5 left-5 h-10 w-10 rounded-full grid place-items-center text-white ${tint} shadow-elegant transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110`}>
+                    <Icon className="h-5 w-5" />
                   </div>
                 </div>
-                <div className="p-6 pt-0">
-                  <Link to="/programs" className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-smooth">
-                    READ MORE <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                <div className="p-6 pt-7">
+                  <h3 className="font-bold text-lg text-foreground">{title}</h3>
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{desc}</p>
                 </div>
-              </HoverCard>
-            </div>
-          ))}
-        </div>
+              </div>
+              <div className="p-6 pt-0">
+                <Link to="/programs" className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-smooth">
+                  READ MORE <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </HoverCard>
+          </ScrollReveal>
+        ))}
       </div>
     </section>
   );
@@ -576,10 +602,23 @@ const news = [
 ];
 
 function News() {
-  const doubled = [...news, ...news];
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => setCurrent(prev => (prev + 1) % news.length), 3500);
+    return () => clearInterval(id);
+  }, []);
+
+  const slideVariants = {
+    enter:  { x: "100%", opacity: 0 },
+    center: { x: 0, opacity: 1, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+    exit:   { x: "-100%", opacity: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+  };
+
+  const item = news[current];
 
   return (
-    <section className="pb-20 overflow-hidden">
+    <section className="pb-20">
       <ScrollReveal direction="up" className="container-wide flex items-end justify-between mb-8 flex-wrap gap-3">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">Latest News & Updates</h2>
         <Link to="/media" className="inline-flex items-center gap-1 font-semibold text-primary hover:text-accent transition-smooth">
@@ -587,37 +626,51 @@ function News() {
         </Link>
       </ScrollReveal>
 
-      <div className="partner-slider">
-        <div className="news-slide-track">
-          {doubled.map((n, i) => (
-            <div key={i} className="news-slide">
-              <HoverCard className="bg-card rounded-xl overflow-hidden shadow-card border border-border/30 w-full flex flex-col justify-between group">
-                <div>
-                  <div className="h-48 overflow-hidden relative">
-                    <img
-                      src={n.img}
-                      alt={n.title}
-                      width={768}
-                      height={512}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <div className="text-xs text-accent font-semibold">{n.date}</div>
-                    <h3 className="font-bold text-foreground mt-2 leading-snug">{n.title}</h3>
-                  </div>
-                </div>
-                <div className="p-5 pt-0">
-                  <Link
-                    to="/media"
-                    className="inline-flex items-center gap-1 text-xs font-bold tracking-wider text-primary hover:text-accent transition-colors duration-300"
-                  >
-                    READ MORE <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-              </HoverCard>
-            </div>
+      <div className="container-wide">
+        <div className="relative rounded-xl overflow-hidden shadow-elegant border border-border/30 bg-card h-64 sm:h-80 md:h-96">
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              key={current}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="absolute inset-0 flex flex-col md:flex-row"
+            >
+              <div className="md:w-3/5 relative h-36 md:h-full overflow-hidden flex-shrink-0">
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  width={768}
+                  height={512}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/30 to-transparent" />
+              </div>
+              <div className="md:w-2/5 px-6 py-5 md:px-10 md:py-0 flex flex-col justify-center bg-card">
+                <span className="text-xs text-accent font-bold tracking-wider uppercase">{item.date}</span>
+                <h3 className="font-extrabold text-xl md:text-2xl text-foreground mt-2 leading-tight">{item.title}</h3>
+                <Link
+                  to="/media"
+                  className="mt-5 self-start inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold text-xs px-5 py-2.5 rounded-md hover:bg-primary-deep transition-smooth"
+                >
+                  READ MORE <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="flex justify-center gap-2 mt-5">
+          {news.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                i === current ? "bg-primary w-6" : "bg-muted-foreground/30 w-2.5 hover:bg-muted-foreground/50"
+              }`}
+              aria-label={`Go to news item ${i + 1}`}
+            />
           ))}
         </div>
       </div>

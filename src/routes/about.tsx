@@ -2,14 +2,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageShell } from "@/components/page-shell";
-import { Target, Eye, Heart, Users, Activity, HandHeart, Scale, ChevronDown } from "lucide-react";
+import { Target, Eye, Heart, Users, ChevronDown, Globe } from "lucide-react";
 import { ScrollReveal, HoverCard } from "@/components/ui/animation-wrappers";
 
 // Import team headshots
 import rameshJaipal from "@/assets/ramesh-jaipal.png";
-import priyaKumari from "@/assets/priya-kumari.png";
-import muhammadAli from "@/assets/muhammad-ali.png";
-import soniaMasih from "@/assets/sonia-masih.png";
+import zohaibAbbas from "@/assets/zohaib-abbas.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -138,25 +136,11 @@ function AboutPage() {
       icon: Users,
     },
     {
-      name: "Dr. Priya Kumari",
-      role: "Medical Relief Coordinator",
-      bio: "Dr. Priya coordinates our mobile health clinics, organizing medical camps that deliver free treatment and healthcare supplies to remote and flood-affected communities.",
-      image: priyaKumari,
-      icon: Activity,
-    },
-    {
-      name: "Muhammad Ali",
-      role: "Volunteer Network Manager",
-      bio: "Ali mobilizes and manages our active network of over 500 volunteers across Pakistan, coordinating local learning center programs and emergency relief operations.",
-      image: muhammadAli,
-      icon: HandHeart,
-    },
-    {
-      name: "Sonia Masih",
-      role: "Advocacy & Legal Advisor",
-      bio: "Sonia leads our grassroots legal awareness workshops, educating marginalized communities about their constitutional rights, employment quotas, and family laws.",
-      image: soniaMasih,
-      icon: Scale,
+      name: "Muhammad Zohaib Abbas",
+      role: "Web Developer & Digital Manager",
+      bio: "Muhammad Zohaib Abbas is a Software Engineering student at COMSATS University Islamabad who architected and built the HRFPK digital platform from the ground up. Using React 19, TypeScript, TanStack Router, and Tailwind CSS v4, he delivered a production-grade website with Server-Side Rendering for optimal reach and SEO. He continues to manage, maintain, and evolve the platform as the foundation grows.",
+      image: zohaibAbbas,
+      icon: Globe,
     },
   ];
 

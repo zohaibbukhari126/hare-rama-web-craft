@@ -8,6 +8,7 @@ import { ScrollReveal, HoverCard } from "@/components/ui/animation-wrappers";
 // Import team headshots
 import rameshJaipal from "@/assets/ramesh-jaipal.png";
 import zohaibAbbas from "@/assets/zohaib-abbas.png";
+import zainAli from "@/assets/zain-rama.png";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -140,6 +141,13 @@ function AboutPage() {
       role: "Web Developer & Digital Manager",
       bio: "Muhammad Zohaib Abbas is a Software Engineering student at COMSATS University Islamabad who architected and built the HRFPK digital platform from the ground up. Using React 19, TypeScript, TanStack Router, and Tailwind CSS v4, he delivered a production-grade website with Server-Side Rendering for optimal reach and SEO. He continues to manage, maintain, and evolve the platform as the foundation grows.",
       image: zohaibAbbas,
+      icon: Globe,
+    },
+    {
+      name: "Zain Ali",
+      role: "Full Stack Engineer",
+      bio: "Zain Ali is a Full Stack Developer and graduate of COMSATS University Islamabad, specializing in building scalable web and mobile applications, backend systems, and AI-powered solutions. He is experienced in modern development technologies, API integration, databases, and automation, with a focus on creating practical solutions to real-world problems.",
+      image: zainAli,
       icon: Globe,
     },
   ];
